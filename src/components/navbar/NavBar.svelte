@@ -1,7 +1,7 @@
 <script lang="ts">
   import type { NavItemType } from "./NavTypes";
   import { onMount } from "svelte";
-  import { initTheme, toggleTheme } from "./helpers/theme";
+  import { initTheme, toggleThemeWithTransition } from "./helpers/theme";
   import LeftNavBtn from "./LeftNavBtn.svelte";
   import MenuBar from "./MenuBar.svelte";
   import RightNavBar from "./RightNavBar.svelte";
@@ -59,7 +59,11 @@
     if (typeof document === "undefined" || typeof window === "undefined")
       return;
 
-    const next = toggleTheme(document, window, isDark ? "dark" : "light");
+    const next = toggleThemeWithTransition(
+      document,
+      window,
+      isDark ? "dark" : "light",
+    );
     isDark = next === "dark";
   };
 
