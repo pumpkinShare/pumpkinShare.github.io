@@ -30,12 +30,12 @@ import { hyacinePlugin } from "@hyacine/astro";
 import mdx from "@astrojs/mdx";
 
 import spoiler from "./src/remark-plugins/spoiler.mjs";
+import noteDirective from "./src/remark-plugins/note-directive.mjs";
+import spanDirective from "./src/remark-plugins/span-directive.mjs";
 
 import Font from "vite-plugin-font";
 
 import PlayformInline from "@playform/inline";
-
-import process from "process";
 
 // https://astro.build/config
 export default defineConfig({
@@ -134,6 +134,8 @@ export default defineConfig({
       remarkRubyDirective,
       remarkIns,
       remarkDirective,
+      noteDirective,
+      spanDirective,
       remarkGfm,
       remarkEmoji,
       remarkExtendedTable,
