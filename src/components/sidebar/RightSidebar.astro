@@ -317,49 +317,103 @@ const hasRenderedContent =
     const searchTriggers = Array.from(
       document.querySelectorAll("[data-open-global-search]"),
     );
+    const rootEntries = roots
+      .map((root) => {
+        const inner = root.querySelector(".layout-extra-column__inner");
+
+        if (!(inner instanceof HTMLElement)) {
+          return null;
+        }
+
+        return { root, inner };
+      })
+      .filter((entry) => entry !== null);
 
     if (roots.length === 0) {
       return;
     }
 
-    const computeHeaderHeight = () => {
-      const headerElement = document.querySelector("#imgs");
-      const navElement = document.querySelector("#nav");
-      const wavesElement = document.querySelector("#waves");
+    const headerElements = [
+      document.querySelector("#imgs"),
+      document.querySelector("#nav"),
+      document.querySelector("#waves"),
+    ].filter((element) => element instanceof HTMLElement);
 
+    const computeHeaderHeight = () => {
       let headerHeight = 0;
 
-      if (headerElement) {
-        headerHeight += headerElement.offsetHeight;
-      }
-      if (navElement) {
-        headerHeight += navElement.offsetHeight;
-      }
-      if (wavesElement) {
-        headerHeight += wavesElement.offsetHeight;
-      }
+      headerElements.forEach((element) => {
+        headerHeight += element.offsetHeight;
+      });
 
       return headerHeight;
     };
 
-    const sync = () => {
-      const headerHeight = computeHeaderHeight();
-      const shouldAffix =
-        window.scrollY > headerHeight - 260 && window.innerWidth >= 1440;
+    let cachedHeaderHeight = computeHeaderHeight();
+    let frameId = 0;
 
-      roots.forEach((root) => {
-        const inner = root.querySelector(".layout-extra-column__inner");
-        if (!inner) {
+    const sync = () => {
+      frameId = 0;
+
+      const shouldAffix =
+        window.scrollY > cachedHeaderHeight - 260 && window.innerWidth >= 1440;
+
+      rootEntries.forEach(({ root, inner }) => {
+        root.classList.toggle("affix", shouldAffix);
+
+        if (!shouldAffix) {
+          if (root.style.minHeight) {
+            root.style.minHeight = "";
+          }
+
           return;
         }
 
-        root.classList.toggle("affix", shouldAffix);
-        root.style.minHeight = shouldAffix ? `${inner.offsetHeight}px` : "";
+        const nextMinHeight = `${inner.offsetHeight}px`;
+        if (root.style.minHeight !== nextMinHeight) {
+          root.style.minHeight = nextMinHeight;
+        }
       });
     };
 
-    const onScroll = () => sync();
-    const onResize = () => sync();
+    const scheduleSync = () => {
+      if (frameId !== 0) {
+        return;
+      }
+
+      frameId = window.requestAnimationFrame(sync);
+    };
+
+    const refreshHeaderHeight = () => {
+      cachedHeaderHeight = computeHeaderHeight();
+      scheduleSync();
+    };
+
+    const resizeObserver =
+      typeof ResizeObserver === "function"
+        ? new ResizeObserver((entries) => {
+            const shouldRefreshHeaderHeight = entries.some((entry) =>
+              headerElements.includes(entry.target),
+            );
+
+            if (shouldRefreshHeaderHeight) {
+              refreshHeaderHeight();
+              return;
+            }
+
+            scheduleSync();
+          })
+        : undefined;
+
+    headerElements.forEach((element) => {
+      resizeObserver?.observe(element);
+    });
+    rootEntries.forEach(({ inner }) => {
+      resizeObserver?.observe(inner);
+    });
+
+    const onScroll = () => scheduleSync();
+    const onResize = () => refreshHeaderHeight();
     const onSearchOpen = () => {
       const searchButton = document.querySelector("#search");
 
@@ -373,12 +427,17 @@ const hasRenderedContent =
     searchTriggers.forEach((trigger) => {
       trigger.addEventListener("click", onSearchOpen);
     });
-    requestAnimationFrame(sync);
+    scheduleSync();
 
     window[registryKey] = {
       cleanup() {
+        if (frameId !== 0) {
+          window.cancelAnimationFrame(frameId);
+        }
+
         window.removeEventListener("scroll", onScroll);
         window.removeEventListener("resize", onResize);
+        resizeObserver?.disconnect();
         searchTriggers.forEach((trigger) => {
           trigger.removeEventListener("click", onSearchOpen);
         });
