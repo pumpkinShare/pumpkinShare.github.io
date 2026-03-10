@@ -26,7 +26,6 @@ import remarkBreaks from "remark-breaks";
 
 import AutoImport from "astro-auto-import";
 
-import { hyacinePlugin } from "@hyacine/astro";
 import mdx from "@astrojs/mdx";
 
 import spoiler from "./src/remark-plugins/spoiler.mjs";
@@ -66,7 +65,6 @@ export default defineConfig({
       },
     }),
     sitemap(),
-    hyacinePlugin(),
     AutoImport({
       imports: [
         "@/components/mdx/Spoiler.astro",
