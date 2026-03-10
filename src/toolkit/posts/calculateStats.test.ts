@@ -40,13 +40,13 @@ describe("calculateTotalWords", () => {
       {
         id: "1",
         collection: "posts",
-        data: { title: "Test", date: new Date("2023-01-01") },
+        data: { title: "Test", date: new Date("2023-01-01"), encrypted: false },
         body: "hello world",
       },
       {
         id: "2",
         collection: "posts",
-        data: { title: "Test2", date: new Date("2023-01-01") },
+        data: { title: "Test2", date: new Date("2023-01-01"), encrypted: false },
         body: "你好世界",
       },
     ];
@@ -58,13 +58,13 @@ describe("calculateTotalWords", () => {
       {
         id: "1",
         collection: "posts",
-        data: { title: "Test", date: new Date("2023-01-01") },
+        data: { title: "Test", date: new Date("2023-01-01"), encrypted: false },
         body: "hello world",
       },
       {
         id: "2",
         collection: "posts",
-        data: { title: "Test2", date: new Date("2023-01-01") },
+        data: { title: "Test2", date: new Date("2023-01-01"), encrypted: false },
         body: "你好世界",
       },
     ];
@@ -76,7 +76,7 @@ describe("calculateTotalWords", () => {
       {
         id: "1",
         collection: "posts",
-        data: { title: "Test", date: new Date("2023-01-01") },
+        data: { title: "Test", date: new Date("2023-01-01"), encrypted: false },
         body: "new body",
       },
     ];
@@ -115,7 +115,7 @@ describe("calculatePostStats", () => {
       {
         id: "1",
         collection: "posts",
-        data: { title: "Test", date: new Date("2023-01-01") },
+        data: { title: "Test", date: new Date("2023-01-01"), encrypted: false },
         body: "hello world 你好",
       },
     ];
@@ -129,7 +129,7 @@ describe("calculatePostStats", () => {
       {
         id: "1",
         collection: "posts",
-        data: { title: "Test", date: new Date("2023-01-01") },
+        data: { title: "Test", date: new Date("2023-01-01"), encrypted: false },
         body: "hello world 你好",
       },
     ];

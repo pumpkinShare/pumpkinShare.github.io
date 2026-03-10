@@ -6,37 +6,37 @@ describe("formatCategories", () => {
   const post1: Post = {
     id: "p1",
     collection: "posts",
-    data: { title: "文章一", date: new Date(), categories: [] },
+    data: { title: "文章一", date: new Date(), categories: [], encrypted: false },
     body: "内容一",
   };
   const post2: Post = {
     id: "p2",
     collection: "posts",
-    data: { title: "文章二", date: new Date(), categories: [] },
+    data: { title: "文章二", date: new Date(), categories: [], encrypted: false },
     body: "内容二",
   };
   const post3: Post = {
     id: "p3",
     collection: "posts",
-    data: { title: "文章三", date: new Date(), categories: [] },
+    data: { title: "文章三", date: new Date(), categories: [], encrypted: false },
     body: "内容三",
   };
   const post4: Post = {
     id: "p4",
     collection: "posts",
-    data: { title: "文章四", date: new Date(), categories: [] },
+    data: { title: "文章四", date: new Date(), categories: [], encrypted: false },
     body: "内容四",
   };
   const post5: Post = {
     id: "p5",
     collection: "posts",
-    data: { title: "文章五", date: new Date(), categories: [] },
+    data: { title: "文章五", date: new Date(), categories: [], encrypted: false },
     body: "内容五",
   };
   const post6: Post = {
     id: "p6",
     collection: "posts",
-    data: { title: "文章六", date: new Date(), categories: [] },
+    data: { title: "文章六", date: new Date(), categories: [], encrypted: false },
     body: "内容六",
   };
 
